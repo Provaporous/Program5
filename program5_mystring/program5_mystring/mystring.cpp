@@ -70,24 +70,33 @@ bool operator!=(const MyString& s1, const MyString& s2)
 
 MyString::MyString()// empty string
 {
-
+	size = 0;		// no letters
+	str = 0;		// null pointer 
 }
 
 MyString::MyString(const char* c)// conversion from c-string
 {
-
+	size = strlen(c);
+	str = new char[size + 1];
+	strcpy(str, c);
 }
 MyString::MyString(int i)// conversion from int
 {
-
+	size = 2;
+	str = new char[size + 1];
+	str[0] = (char)i;
+	str[1] = '\n';
 }
 MyString::~MyString()
 {
-
+	delete str;
 }// destructor
 MyString::MyString(const MyString& s)
 {
-
+	size = s.size;
+	str = new char[size + 1];
+	for (int i = 0; i < size+1; i++)
+		str[i] = s[i]; 
 }
 
 MyString& MyString::operator=(const MyString& s)
@@ -104,12 +113,12 @@ MyString& MyString::operator+=(const MyString& s)
 
 char & MyString::operator[](unsigned int index)// bracket operators to access char positions
 {
-	
+	return str[index];
 }
 
 const char & MyString::operator[](unsigned int index) const
 {
-	
+	return str[index];
 }
 
 MyString & MyString::insert(unsigned int index, const MyString & s)
@@ -137,7 +146,7 @@ int MyString::getLength() const
 }// return string length
 const char* MyString::getCString() const
 {
-	
+	return str;
 }// return c-string equiv
 
 MyString MyString::substring(unsigned int, unsigned int) const
