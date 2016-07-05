@@ -4,5 +4,8 @@ using namespace std;
 
 int main()
 {
+	MyString dog;
+	cin >> dog;
+	cout << dog;
 	return 0;
 }

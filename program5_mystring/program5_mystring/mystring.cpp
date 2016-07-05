@@ -4,20 +4,23 @@
 
 ostream& operator<< (ostream& os, const MyString& s)
 {
-	
-	
+	os << s.str;
 	return os;
 }
 istream& operator >> (istream& is, MyString& s)
 {
+	//char temp[200];
+	//is >> temp;
 	
+	//s = temp;
 	
 	return is;
 }
 
 istream & getline(istream & is, MyString & s, char delim)
 {
-	
+	char temp[200];
+
 	
 	return is;
 }
@@ -76,6 +79,7 @@ MyString::MyString()// empty string
 
 MyString::MyString(const char* c)// conversion from c-string
 {
+	delete[] str;
 	size = strlen(c);
 	str = new char[size + 1];
 	strcpy(str, c);
@@ -101,8 +105,10 @@ MyString::MyString(const MyString& s)
 
 MyString& MyString::operator=(const MyString& s)
 {
-
-
+	delete [] str;
+	size = s.size;
+	str = new char[size + 1];
+	strcpy(str, s.str);
 	return *this;
 }// assignment operator
 
@@ -142,7 +148,7 @@ int MyString::getLength() const
 {
 	
 	
-	return 0;
+	return strlen(str);
 }// return string length
 const char* MyString::getCString() const
 {
