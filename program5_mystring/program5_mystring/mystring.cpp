@@ -9,10 +9,10 @@ ostream& operator<< (ostream& os, const MyString& s)
 }
 istream& operator >> (istream& is, MyString& s)
 {
-	//char temp[200];
-	//is >> temp;
+	char temp[200];
+	is >> temp;
 	
-	//s = temp;
+	s = temp;
 	
 	return is;
 }
@@ -28,58 +28,60 @@ istream & getline(istream & is, MyString & s, char delim)
 
 MyString operator+ (const MyString& s1, const MyString& s2)
 {
-	MyString snew;
+	MyString stemp=s1;
+	stemp.size = s1.size + s2.size;
+	strcat(stemp.str, s2.str);
+	
 
-	return snew;
+	return stemp;
 }
 
 bool operator< (const MyString& s1, const MyString& s2)
 {
-
-
-	return true;
+	if (strcmp(s1.str, s2.str)<0)    //s1 is less than s2
+		return true;
+	else return false;
  }
 bool operator> (const MyString& s1, const MyString& s2)
 {
-
-
-	return true;
+	return (s2 < s1);              //s1 is more than s2
  }
 bool operator<=(const MyString& s1, const MyString& s2)
 {
-
-
-	return true;
+	if (s1 < s2 || s1 == s2)return true;
+	else return false;
  }
 bool operator>=(const MyString& s1, const MyString& s2)
 {
-
+	if (s1 > s2 || s1 == s2)return true;
+	else return false;
 
 	return true;
  }
 bool operator==(const MyString& s1, const MyString& s2)
 {
-
-
-	return true;
+	if (strcmp(s1.str, s2.str)==0)    //s1 is s2
+		return true;
+	else return false;
  }
 bool operator!=(const MyString& s1, const MyString& s2)
 {
-
-
-	return true;
+	if (strcmp(s1.str, s2.str) != 0)    //s1 is s2
+		return true;
+	else return false;
  }
 
 
 MyString::MyString()// empty string
 {
+	
 	size = 0;		// no letters
-	str = 0;		// null pointer 
+	str = new char[size + 1];
 }
 
 MyString::MyString(const char* c)// conversion from c-string
 {
-	delete[] str;
+	
 	size = strlen(c);
 	str = new char[size + 1];
 	strcpy(str, c);
@@ -93,14 +95,21 @@ MyString::MyString(int i)// conversion from int
 }
 MyString::~MyString()
 {
-	delete str;
+	delete [] str;
 }// destructor
 MyString::MyString(const MyString& s)
 {
 	size = s.size;
-	str = new char[size + 1];
-	for (int i = 0; i < size+1; i++)
-		str[i] = s[i]; 
+	str = new char[size + 50];
+	strcpy(str, s.str);
+	
+	
+	/*
+	for (int i = 0; i < size + 1; i++)
+	{
+		str[i] = s[i];
+	}
+	*/
 }
 
 MyString& MyString::operator=(const MyString& s)
