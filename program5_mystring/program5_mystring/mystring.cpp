@@ -1,7 +1,14 @@
 #include <cstring>
 #include <iostream>
 #include "mystring.h"
-
+//--------------------------------------------------------------------------------------
+//--					Program 5 - Mystring
+//--		Austin Gottselig
+//--		Section 3
+//--
+//--		Insert function doesnt work :(
+//--		
+//--------------------------------------------------------------------------------------
 ostream& operator<< (ostream& os, const MyString& s)
 {
 	os << s.str;
@@ -19,9 +26,18 @@ istream& operator >> (istream& is, MyString& s)
 
 istream & getline(istream & is, MyString & s, char delim)
 {
-	char temp[200];
-
+	delete[]  s.str;
+	s.str = new char[200];
+	if (delim == '\n')
+	{
+		cin.getline(s.str,200);
+	}
+	else
+	{
+		cin.getline(s.str, 200,delim);
+	}
 	
+
 	return is;
 }
 
@@ -71,12 +87,13 @@ bool operator!=(const MyString& s1, const MyString& s2)
 	else return false;
  }
 
-
-MyString::MyString()// empty string
+// empty string
+MyString::MyString()
 {
 	
 	size = 0;		// no letters
 	str = new char[size + 1];
+	str[0] = '\0';
 }
 
 MyString::MyString(const char* c)// conversion from c-string
@@ -93,11 +110,11 @@ MyString::MyString(int i)// conversion from int
 	str[0] = (char)i;
 	str[1] = '\n';
 }
-MyString::~MyString()
+MyString::~MyString()   // DESTRUCTOR
 {
 	delete [] str;
 }// destructor
-MyString::MyString(const MyString& s)
+MyString::MyString(const MyString& s)    // CONSTRUCTOR
 {
 	size = s.size;
 	str = new char[size + 50];
@@ -112,17 +129,37 @@ MyString::MyString(const MyString& s)
 	*/
 }
 
-MyString& MyString::operator=(const MyString& s)
+MyString& MyString::operator=(const MyString& s)   // Assignment operator
 {
 	delete [] str;
 	size = s.size;
 	str = new char[size + 1];
 	strcpy(str, s.str);
 	return *this;
-}// assignment operator
+}
+MyString MyString::operator+(const MyString & s)  // concatination operator, edited from suggested
+{
+	MyString temp = *this;
+	delete[] temp.str;
+	temp.size += s.size;
+	temp.str = new char[temp.size + 1];
+	strcpy(temp.str, str);
+	strcat(temp.str, s.str);
+
+	return temp;
+}
+// assignment operator
 
 MyString& MyString::operator+=(const MyString& s)
 {
+	
+	MyString temp = *this;
+	delete [] str;
+	size += s.size;
+	str = new char[size + 1];
+	strcpy(str, temp.str);
+	strcat(str, s.str);
+
 	return *this;
 }// concatenation/assignment
 
@@ -139,7 +176,33 @@ const char & MyString::operator[](unsigned int index) const
 MyString & MyString::insert(unsigned int index, const MyString & s)
 {
 	
+	/*
+	
+	Cannot get to work without memory error
+	This gets close but with garbage data tacked on, and unix throws an error with it
 
+	MyString strtemp;
+	strtemp.str = new char[size + 1];
+	strcpy(strtemp.str, str);
+	size = size + s.size;
+	delete[] str;
+	str = new char[size + 1];
+	for (int i = 0; i < index; i++)
+	{
+		str[i] = strtemp.str[i];
+	}
+	for (int i = index; i < s.size+index; i++)
+	{
+		str[i] = s.str[i-index];
+	}
+	for (int i = (index + s.size); i < size;i++)
+	{
+		str[i] = strtemp.str[i-index+4];
+	}
+
+	
+
+	*/
 	return *this;
 }
 // insert s into the string at position "index"
@@ -148,7 +211,30 @@ MyString & MyString::insert(unsigned int index, const MyString & s)
 
 int MyString::indexOf(const MyString & s) const
 {
-	return 0;
+	bool maybe = false;
+	bool found = false;
+	int maybeindex = -1;
+	for (int i = 0; i < size; i++)
+	{
+		if (str[i] == s.str[0])
+		{
+			maybe = true;
+			maybeindex = i;
+		}
+		while (maybe == true)
+		{
+			for (int j = 0; j < s.size; j++)
+			{
+				if (str[j + i] != s.str[j])maybe = false;
+			}
+			if (maybe == true) found = true;
+			if (found = true) return maybeindex;
+			else maybeindex = -1;
+		}
+	}
+	return -1;
+	
+
 }//  return the index, or -1 if not found
 
 
@@ -164,15 +250,25 @@ const char* MyString::getCString() const
 	return str;
 }// return c-string equiv
 
-MyString MyString::substring(unsigned int, unsigned int) const
+MyString MyString::substring(unsigned int i, unsigned int j) const
 {
-	MyString s;
-
-	return s;
+	MyString temp=*this;
+	
+	return temp;
 }
-MyString MyString::substring(unsigned int) const
+MyString MyString::substring(unsigned int start) const
 {
-	MyString s;
-
-	return s;
+	MyString temp = *this;
+	/*
+	
+	
+	temp.size = size - start;
+	delete[] temp.str;
+	temp.str = new char[temp.size + 1];
+	for (int j = 0; j < temp.size; j++)
+	{
+		temp.str[0] = str[start + j];
+	}
+	*/
+	return temp;
 }

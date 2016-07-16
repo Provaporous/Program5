@@ -2,6 +2,17 @@
 #include <iostream>
 using namespace std;
 
+//--------------------------------------------------------------------------------------
+//--					Program 5 - Mystring
+//--		Austin Gottselig
+//--		Section 3
+//--
+//--		Insert function doesnt work :(
+//--		
+//--------------------------------------------------------------------------------------
+
+
+
 class MyString
 {
   friend ostream& operator<< (ostream& os, const MyString& s);
@@ -24,7 +35,7 @@ public:
   ~MyString();				// destructor
   MyString(const MyString& s);		// copy constructor
   MyString& operator=(const MyString& s);   // assignment operator
-
+  MyString operator+(const MyString& s);    // concatination operator, edited from suggested
   MyString& operator+=(const MyString& s);  // concatenation/assignment
 
   // bracket operators to access char positions
@@ -41,8 +52,8 @@ public:
   int getLength() const;		// return string length
   const char* getCString() const;	// return c-string equiv
 
-  MyString substring(unsigned int , unsigned int ) const;
-  MyString substring(unsigned int ) const;
+  MyString substring(unsigned int i, unsigned int j) const;
+  MyString substring(unsigned int start) const;
 
 private:
 
